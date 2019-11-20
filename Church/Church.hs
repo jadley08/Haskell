@@ -1,6 +1,8 @@
 {-# LANGUAGE RankNTypes #-}
 
 type Nat = Integer
+--data Ch x = C ((x -> x) -> x -> x) 
+--type Church x = (x -> x) -> x -> x
 type Church = forall x. (x -> x) -> x -> x
 
 -----------------------------------
