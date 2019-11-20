@@ -3,6 +3,8 @@
 type Nat = Integer
 type Church = forall x. (x -> x) -> x -> x
 
+-----------------------------------
+
 suc :: Nat -> Nat
 suc x = x + 1
 
