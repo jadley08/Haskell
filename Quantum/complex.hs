@@ -1,6 +1,8 @@
 type Complex = (Float,Float)
 type Polar   = (Float,Float)
 
+zero :: Complex
+zero = (0, 0)
 
 re :: Complex -> Float
 re (x, y) = x
@@ -25,6 +27,9 @@ add_vec (x:xs) (y:ys) = (add x y) : (add_vec xs ys)
 
 neg_vec :: [Complex] -> [Complex]
 neg_vec v = map neg v
+
+zero_vec :: Int -> [Complex]
+zero_vec n = replicate n zero
 
 divide :: Complex -> Complex -> Complex
 divide (x1, y1) (x2, y2) = ((((x1 * x2) + (y1 * y2)) / ((x2 * x2) + (y2 * y2)))
