@@ -62,6 +62,9 @@ transpose_helper m num_rows num_cols col = if (col >= num_cols)
 transpose :: [[Complex]] -> [[Complex]]
 transpose m = transpose_helper m (length m) (length (m !! 0)) 0
 
+adjoint :: [[Complex]] -> [[Complex]]
+adjoint m = transpose (conjugate_matrix m)
+
 divide :: Complex -> Complex -> Complex
 divide (x1, y1) (x2, y2) = ((((x1 * x2) + (y1 * y2)) / ((x2 * x2) + (y2 * y2)))
                            ,(((x2 * y1) - (x1 * y2)) / ((x2 * x2) + (y2 * y2))))
@@ -97,4 +100,5 @@ nth_root (r,t) n = list_nth_roots (r ** (1 / n)) (n - 1) (\k -> ((1 / n) * (t + 
 -- main = print((scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (0,2) (scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (add (0,2) (1,2)) [[(1,-1),(3,0)],[(2,2),(4,1)]])
-main = print(transpose [[(6,-3),(2,12),(0,-19)],[(0,0),(5,2.1),(17,0)],[(1,0),(2,5),(3,-4.5)]])
+-- main = print(transpose [[(6,-3),(2,12),(0,-19)],[(0,0),(5,2.1),(17,0)],[(1,0),(2,5),(3,-4.5)]])
+main = print(adjoint [[(6,-3),(2,12),(0,-19)],[(0,0),(5,2.1),(17,0)],[(1,0),(2,5),(3,-4.5)]])
