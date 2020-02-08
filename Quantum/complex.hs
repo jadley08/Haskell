@@ -33,4 +33,17 @@ polar_mul (r1,t1) (r2,t2) = (r1 * r2 , t1 + t2)
 polar_div :: Polar -> Polar -> Polar
 polar_div (r1,t1) (r2,t2) = (r1 / r2 , t1 - t2)
 
-main = print(polar_div (to_polar (2,2)) (to_polar (1,-1)))
+polar_pow :: Polar -> Float -> Polar
+polar_pow (r,t) n = (r ** n, n * t)
+
+to_complex :: Polar -> Complex
+to_complex (r,t) = (r * cos t , r * sin t)
+
+list_nth_roots :: Float -> Float -> (Float -> Float) -> [Polar]
+list_nth_roots re_part 0 get_im_part = [(re_part, (get_im_part 0))]
+list_nth_roots re_part n get_im_part = (re_part, (get_im_part n)) : (list_nth_roots re_part (n - 1) get_im_part)
+
+nth_root :: Polar -> Float -> [Polar]
+nth_root (r,t) n = list_nth_roots (r ** (1 / n)) (n - 1) (\k -> ((1 / n) * (t + (2 * pi * k))))
+
+main = print(nth_root (to_polar (1,1)) 3)
