@@ -14,6 +14,18 @@ add (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 times :: Complex -> Complex -> Complex
 times (x1, y1) (x2, y2) = ((x1 * x2) - (y1 * y2), (x1 * y2) + (y1 * x2))
 
+neg :: Complex -> Complex
+neg (x,y) = (-x,-y)
+
+scale :: Complex -> [Complex] -> [Complex]
+scale c zs = map (times c) zs
+
+add_vec :: [Complex] -> [Complex] -> [Complex]
+add_vec (x:xs) (y:ys) = (add x y) : (add_vec xs ys)
+
+neg_vec :: [Complex] -> [Complex]
+neg_vec v = map neg v
+
 divide :: Complex -> Complex -> Complex
 divide (x1, y1) (x2, y2) = ((((x1 * x2) + (y1 * y2)) / ((x2 * x2) + (y2 * y2)))
                            ,(((x2 * y1) - (x1 * y2)) / ((x2 * x2) + (y2 * y2))))
@@ -46,4 +58,4 @@ list_nth_roots re_part n get_im_part = (re_part, (get_im_part n)) : (list_nth_ro
 nth_root :: Polar -> Float -> [Polar]
 nth_root (r,t) n = list_nth_roots (r ** (1 / n)) (n - 1) (\k -> ((1 / n) * (t + (2 * pi * k))))
 
-main = print(nth_root (to_polar (1,1)) 3)
+main = print(scale (8,-2) [(16,2.3),(0,-7),(6,0),(5,-4)])
