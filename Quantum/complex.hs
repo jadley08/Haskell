@@ -7,6 +7,12 @@ type Polar   = (Float,Float)
 zero :: Complex
 zero = (0, 0)
 
+one :: Complex
+one = (1,0)
+
+i :: Complex
+i = (0,1)
+
 re :: Complex -> Float
 re (x, y) = x
 
@@ -139,6 +145,24 @@ matrix_mult_helper m1 m2 cur_row max_rows max_cols =
 matrix_mult :: [[Complex]] -> [[Complex]] -> [[Complex]]
 matrix_mult m1 m2 = matrix_mult_helper m1 m2 0 (get_num_rows m1) (get_num_cols m2)
 
+gen_id_row :: Int -> Int -> Int -> [Complex]
+gen_id_row cur one_row n =
+  if (cur == one_row)
+     then (one : (gen_id_row (cur + 1) one_row n))
+     else if (cur >= n)
+          then []
+          else (zero : (gen_id_row (cur + 1) one_row n))
+
+id_matrix_helper :: Int -> Int -> [[Complex]]
+id_matrix_helper cur_row max_rows =
+  if (cur_row >= max_rows)
+     then []
+     else ((gen_id_row 0 cur_row max_rows) : (id_matrix_helper (cur_row + 1) max_rows))
+
+id_matrix :: Int -> [[Complex]]
+id_matrix n = id_matrix_helper 0 n
+
+
 -- main = print((scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (0,2) (scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (add (0,2) (1,2)) [[(1,-1),(3,0)],[(2,2),(4,1)]])
@@ -147,4 +171,5 @@ matrix_mult m1 m2 = matrix_mult_helper m1 m2 0 (get_num_rows m1) (get_num_cols m
 -- main = print (scale (1.5,0) (scale (2,0) [(0,0), (1,1)]))
 -- main = print (scale (3,0) [(0,0), (1,1)])
 -- main = print(get_column [[(6,-3),(2,12),(0,-19)],[(0,0),(5,2.1),(17,0)],[(1,0),(2,5),(3,-4.5)]] 1)
-main = print (matrix_mult [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]] [[(5,0),(2,-1),(6,-4)],[(0,0),(4,5),(2,0)],[(7,-4),(2,7),(0,0)]])
+-- main = print (matrix_mult [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]] [[(5,0),(2,-1),(6,-4)],[(0,0),(4,5),(2,0)],[(7,-4),(2,7),(0,0)]])
+-- main = print (id_matrix 5)
