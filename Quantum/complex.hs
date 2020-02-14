@@ -36,6 +36,7 @@ scale :: Complex -> [Complex] -> [Complex]
 scale c zs = map (times c) zs
 
 add_vec :: [Complex] -> [Complex] -> [Complex]
+add_vec [] [] = []
 add_vec (x:xs) (y:ys) = (add x y) : (add_vec xs ys)
 
 neg_vec :: [Complex] -> [Complex]
@@ -59,6 +60,7 @@ get_num_cols :: [[Complex]] -> Int
 get_num_cols m = length (m !! 0)
 
 add_matrix :: [[Complex]] -> [[Complex]] -> [[Complex]]
+add_matrix [] [] = []
 add_matrix (x:xs) (y:ys) = (add_vec x y) : (add_matrix xs ys)
 
 neg_matrix :: [[Complex]] -> [[Complex]]
@@ -162,6 +164,49 @@ id_matrix_helper cur_row max_rows =
 id_matrix :: Int -> [[Complex]]
 id_matrix n = id_matrix_helper 0 n
 
+vector_to_matrixT :: [Complex] -> [[Complex]]
+vector_to_matrixT v = transpose [v]
+
+sum_diagonals_helper :: [[Complex]] -> Int -> Int -> Complex
+sum_diagonals_helper m cur_row max_rows =
+  if (cur_row >= max_rows)
+     then zero
+     else if (cur_row >= (length (m !! cur_row)))
+          then (sum_diagonals_helper m (cur_row + 1) max_rows)
+          else (add ((m !! cur_row) !! cur_row) (sum_diagonals_helper m (cur_row + 1) max_rows))
+
+sum_diagonals :: [[Complex]] -> Complex
+sum_diagonals m = sum_diagonals_helper m 0 (get_num_rows m)
+
+inner_product :: [[Complex]] -> [[Complex]] -> Complex
+inner_product v1 v2 = sum_diagonals (matrix_mult (adjoint v1) v2)
+
+inner_product_vec :: [Complex] -> [Complex] -> Complex
+inner_product_vec v1 v2 = inner_product (vector_to_matrixT v1) (vector_to_matrixT v2)
+
+a :: [[Complex]]
+a = [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]]
+
+b :: [[Complex]]
+b = [[(5,0),(2,-1),(6,-4)],[(0,0),(4,5),(2,0)],[(7,-4),(2,7),(0,0)]]
+
+v1 :: [[Complex]]
+v1 = vector_to_matrixT [(2,0),(1,0),(3,0)]
+
+v2 :: [[Complex]]
+v2 = vector_to_matrixT [(6,0),(2,0),(4,0)]
+
+v3 :: [[Complex]]
+v3 = vector_to_matrixT [(0,0),(-1,0),(2,0)]
+
+two_four_three_a :: [[Complex]]
+two_four_three_a = [[(1,0),(2,0)],[(0,0),(1,0)]]
+
+two_four_three_b :: [[Complex]]
+two_four_three_b = [[(0,0),(-1,0)],[(-1,0),(0,0)]]
+
+two_four_three_c :: [[Complex]]
+two_four_three_c = [[(2,0),(1,0)],[(1,0),(3,0)]]
 
 -- main = print((scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (0,2) (scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
@@ -173,3 +218,9 @@ id_matrix n = id_matrix_helper 0 n
 -- main = print(get_column [[(6,-3),(2,12),(0,-19)],[(0,0),(5,2.1),(17,0)],[(1,0),(2,5),(3,-4.5)]] 1)
 -- main = print (matrix_mult [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]] [[(5,0),(2,-1),(6,-4)],[(0,0),(4,5),(2,0)],[(7,-4),(2,7),(0,0)]])
 -- main = print (id_matrix 5)
+-- main = print((adjoint (matrix_mult a b), matrix_mult (adjoint b) (adjoint a)))
+-- main = print (adjoint (matrix_mult a b))
+-- main = print ((inner_product (add_matrix v1 v2) v3),add (inner_product v1 v3) (inner_product v2 v3))
+-- main = print ((inner_product v1 (add_matrix v2 v3)), add (inner_product v1 v2) (inner_product v1 v3))
+-- main = print ((inner_product (add_matrix two_four_three_a two_four_three_b) two_four_three_c), (add (inner_product two_four_three_a two_four_three_c) (inner_product two_four_three_b two_four_three_c)))
+main = print ((inner_product two_four_three_a (add_matrix two_four_three_b two_four_three_c)), (add (inner_product two_four_three_a two_four_three_b) (inner_product two_four_three_a two_four_three_c)))
