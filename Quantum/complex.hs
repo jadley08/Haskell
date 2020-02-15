@@ -184,12 +184,26 @@ inner_product v1 v2 = sum_diagonals (matrix_mult (adjoint v1) v2)
 inner_product_vec :: [Complex] -> [Complex] -> Complex
 inner_product_vec v1 v2 = inner_product (vector_to_matrixT v1) (vector_to_matrixT v2)
 
-
 norm :: [[Complex]] -> Float
 norm m = sqrt (re (inner_product m m))
 
 norm_vec :: [Complex] -> Float
 norm_vec v = sqrt (re (inner_product_vec v v))
+
+len_vec :: [Complex] -> Complex -> Float
+len_vec [] acc = sqrt (re acc)
+len_vec (c:cs) acc = len_vec cs (add (times c c) acc)
+
+len_col_vec :: [[Complex]] -> Complex -> Float
+len_col_vec [] acc = sqrt (re acc)
+len_col_vec ([c]:cs) acc = len_col_vec cs (add (times c c) acc)
+
+dist :: [[Complex]] -> [[Complex]] -> Float
+dist m1 m2 = re (inner_product m1 (neg_matrix m2))
+
+dist_vec :: [Complex] -> [Complex] -> Float
+dist_vec v1 v2 = norm_vec (add_vec v1 (neg_vec v2))
+
 
 a :: [[Complex]]
 a = [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]]
@@ -215,6 +229,12 @@ two_four_three_b = [[(0,0),(-1,0)],[(-1,0),(0,0)]]
 two_four_three_c :: [[Complex]]
 two_four_three_c = [[(2,0),(1,0)],[(1,0),(3,0)]]
 
+v5 :: [[Complex]]
+v5 = vector_to_matrixT [(3,0),(1,0),(2,0)]
+
+v6 :: [[Complex]]
+v6 = vector_to_matrixT [(2,0),(2,0),(-1,0)]
+
 -- main = print((scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (0,2) (scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (add (0,2) (1,2)) [[(1,-1),(3,0)],[(2,2),(4,1)]])
@@ -232,4 +252,6 @@ two_four_three_c = [[(2,0),(1,0)],[(1,0),(3,0)]]
 -- main = print ((inner_product (add_matrix two_four_three_a two_four_three_b) two_four_three_c), (add (inner_product two_four_three_a two_four_three_c) (inner_product two_four_three_b two_four_three_c)))
 -- main = print ((inner_product two_four_three_a (add_matrix two_four_three_b two_four_three_c)), (add (inner_product two_four_three_a two_four_three_b) (inner_product two_four_three_a two_four_three_c)))
 -- main = print (norm_vec [(4,3),(6,-4),(12,-7),(0,13)])
-main = print (norm [[(3,0),(5,0)],[(2,0),(3,0)]])
+-- main = print (norm [[(3,0),(5,0)],[(2,0),(3,0)]])
+-- main = print (dist_vec [(3,0),(1,0),(2,0)] [(2,0),(2,0),(-1,0)])
+main = print (len_col_vec (add_matrix v5 (neg_matrix v6)) zero)
