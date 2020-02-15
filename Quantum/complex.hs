@@ -184,6 +184,13 @@ inner_product v1 v2 = sum_diagonals (matrix_mult (adjoint v1) v2)
 inner_product_vec :: [Complex] -> [Complex] -> Complex
 inner_product_vec v1 v2 = inner_product (vector_to_matrixT v1) (vector_to_matrixT v2)
 
+
+norm :: [[Complex]] -> Float
+norm m = sqrt (re (inner_product m m))
+
+norm_vec :: [Complex] -> Float
+norm_vec v = sqrt (re (inner_product_vec v v))
+
 a :: [[Complex]]
 a = [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]]
 
@@ -223,4 +230,6 @@ two_four_three_c = [[(2,0),(1,0)],[(1,0),(3,0)]]
 -- main = print ((inner_product (add_matrix v1 v2) v3),add (inner_product v1 v3) (inner_product v2 v3))
 -- main = print ((inner_product v1 (add_matrix v2 v3)), add (inner_product v1 v2) (inner_product v1 v3))
 -- main = print ((inner_product (add_matrix two_four_three_a two_four_three_b) two_four_three_c), (add (inner_product two_four_three_a two_four_three_c) (inner_product two_four_three_b two_four_three_c)))
-main = print ((inner_product two_four_three_a (add_matrix two_four_three_b two_four_three_c)), (add (inner_product two_four_three_a two_four_three_b) (inner_product two_four_three_a two_four_three_c)))
+-- main = print ((inner_product two_four_three_a (add_matrix two_four_three_b two_four_three_c)), (add (inner_product two_four_three_a two_four_three_b) (inner_product two_four_three_a two_four_three_c)))
+-- main = print (norm_vec [(4,3),(6,-4),(12,-7),(0,13)])
+main = print (norm [[(3,0),(5,0)],[(2,0),(3,0)]])
