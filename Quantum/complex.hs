@@ -204,6 +204,9 @@ dist m1 m2 = re (inner_product m1 (neg_matrix m2))
 dist_vec :: [Complex] -> [Complex] -> Float
 dist_vec v1 v2 = norm_vec (add_vec v1 (neg_vec v2))
 
+get_angle :: [Complex] -> [Complex] -> Float
+get_angle v1 v2 = acos ((re (inner_product_vec v1 v2)) / ((norm_vec v1) * (norm_vec v2)))
+
 
 a :: [[Complex]]
 a = [[(3,2),(0,0),(5,-6)],[(1,0),(4,2),(0,1)],[(4,-1),(0,0),(4,0)]]
@@ -254,4 +257,5 @@ v6 = vector_to_matrixT [(2,0),(2,0),(-1,0)]
 -- main = print (norm_vec [(4,3),(6,-4),(12,-7),(0,13)])
 -- main = print (norm [[(3,0),(5,0)],[(2,0),(3,0)]])
 -- main = print (dist_vec [(3,0),(1,0),(2,0)] [(2,0),(2,0),(-1,0)])
-main = print (len_col_vec (add_matrix v5 (neg_matrix v6)) zero)
+-- main = print (len_col_vec (add_matrix v5 (neg_matrix v6)) zero)
+main = print (get_angle [(3,0),(-1,0),(0,0)] [(2,0),(-2,0),(1,0)])
