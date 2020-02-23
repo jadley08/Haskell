@@ -238,6 +238,19 @@ v5 = vector_to_matrixT [(3,0),(1,0),(2,0)]
 v6 :: [[Complex]]
 v6 = vector_to_matrixT [(2,0),(2,0),(-1,0)]
 
+dft4 :: [[Complex]]
+dft4 = [ [(1,0),(1,0),(1,0),(1,0)]
+        ,[(1,0),(0,1),(-1,0),(0,-1)]
+        ,[(1,0),(-1,0),(1,0),(-1,0)]
+        ,[(1,0),(0,-1),(-1,0),(0,1)]
+       ]
+
+dft3 :: [[Complex]]
+dft3 = [ [(1,0),(1,0),(1,0)]
+        ,[(1,0),(- 0.5,((sqrt 3) / 2)),(- 0.5,(- (sqrt 3) / 2))]
+        ,[(1,0),(- 0.5,(- (sqrt 3) / 2)),(- 0.5,((sqrt 3) / 2))]
+       ]
+
 -- main = print((scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (0,2) (scale_matrix (1,2) [[(1,-1),(3,0)],[(2,2),(4,1)]]))
 -- main = print(scale_matrix (add (0,2) (1,2)) [[(1,-1),(3,0)],[(2,2),(4,1)]])
@@ -258,4 +271,6 @@ v6 = vector_to_matrixT [(2,0),(2,0),(-1,0)]
 -- main = print (norm [[(3,0),(5,0)],[(2,0),(3,0)]])
 -- main = print (dist_vec [(3,0),(1,0),(2,0)] [(2,0),(2,0),(-1,0)])
 -- main = print (len_col_vec (add_matrix v5 (neg_matrix v6)) zero)
-main = print (get_angle [(3,0),(-1,0),(0,0)] [(2,0),(-2,0),(1,0)])
+-- main = print (get_angle [(3,0),(-1,0),(0,0)] [(2,0),(-2,0),(1,0)])
+main = print (matrix_mult dft3 (adjoint dft3))
+-- main = print (matrix_mult dft4 (adjoint dft4))
